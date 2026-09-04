@@ -17,6 +17,7 @@ func structuresDemo() {
 	// structs can also be passed as arguments to functions
 
 	// map is an unordered and changeable collection that does not allow duplicates.
+	// map[key]value
 	var car = map[string]string {"brand": "Ford", "model": "Mustang", "year": "2017"}
 	fmt.Println(car)
 
@@ -35,4 +36,26 @@ func structuresDemo() {
 	for k, v := range car {
 		fmt.Printf("%v: %v,  ", k, v)
 	}
+
+	// creating empty maps using 'make' keyword
+	// we can also define the length of the map like: make(map[string]int, 10)
+	fruits := make(map[string]int)
+	fruits["apple"] = 5
+	for k, v := range fruits {
+		fmt.Printf("%v: %v,  ", k, v)
+	}
+
+	// another way of defining a struct
+	s := []struct {
+		i int
+		b bool
+	}{
+		{2, true},
+		{3, false},
+		{5, true},
+		{7, true},
+		{11, false},
+		{13, true},
+	}
+	fmt.Println(s)
 }

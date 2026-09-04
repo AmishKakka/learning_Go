@@ -20,9 +20,9 @@ func main() {
 	// defining a variable
 	// variablesDemo()
 
-	var a = "SFO"
-	var b = "PHX"
-	fmt.Println("a: ", a, "b: ", b)
+	// var a = "SFO"
+	// var b = "PHX"
+	// fmt.Println("a: ", a, "b: ", b)
 	// fmt.Println(swap(a, b))
 
 	// arraysDemo()
@@ -32,5 +32,7 @@ func main() {
 	// Recursive function
 	// fmt.Println(factorial(4))
 
-	structuresDemo()
+	// structuresDemo()
+
+	pointerDemo()
 }
