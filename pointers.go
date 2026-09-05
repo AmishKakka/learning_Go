@@ -10,6 +10,8 @@ func pointerDemo() {
 	p = &i
 	// The * operator denotes the pointer's underlying value.
 	fmt.Println(*p)
+	// adding & infront of the variable will give us its address
+	fmt.Println(&p)
 	// set i through the pointer p
 	*p = 21
 	fmt.Println(*p)
