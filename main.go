@@ -19,31 +19,31 @@ func main() {
 
 	// Declare a function inline without giving it a name, assign it to a variable, 
 	// pass it to other functions, or execute it immediately
-	add := func(a, b int) int {
-		return a + b
-	}
-	fmt.Println(add(4, 5))
+	// add := func(a, b int) int {
+	// 	return a + b
+	// }
+	// fmt.Println(add(4, 5))
 
 	// Here, both A & B will get their own backpack containing 'count' variable
 	// This makes closure stateful, it lets you attach persistent state directly to a 
 	// function without using global variables or writing a full object-oriented struct.
-	counterA, counterB := createCounter(), createCounter()
-	fmt.Println(counterA())
-	fmt.Println(counterA())
-	fmt.Println(counterB())
+	// counterA, counterB := createCounter(), createCounter()
+	// fmt.Println(counterA())
+	// fmt.Println(counterA())
+	// fmt.Println(counterB())
 
 	// Again, 'pos' and 'neg' will have their own state of 'sum' variable
-	pos, neg := adder(), adder()
-	for i := range 5 {
-		fmt.Println(pos(i), "  ", neg(-2*i))
-	}
+	// pos, neg := adder(), adder()
+	// for i := range 5 {
+	// 	fmt.Println(pos(i), "  ", neg(-2*i))
+	// }
 
 	// Fibonacci function
-	fib := fibonacci()
-	fmt.Println("Fibonacci series: ")
-	for range 10 {
-		fmt.Println(fib())
-	}
+	// fib := fibonacci()
+	// fmt.Println("Fibonacci series: ")
+	// for range 10 {
+	// 	fmt.Println(fib())
+	// }
 
 	// defining a variable
 	// variablesDemo()
@@ -63,4 +63,15 @@ func main() {
 	// structuresDemo()
 
 	// pointerDemo()
+
+	// Accessing methods attached to struct
+	v := Vertex{3, -4}
+	fmt.Printf("v: %v\n", v)
+	// printing normal distance
+	fmt.Println(distance(v))
+	// taking only absolute values
+	fmt.Println(v.Abs())
+	// changing original values
+	v.Scale(10)
+	fmt.Printf("v: %v\n", v)
 }
