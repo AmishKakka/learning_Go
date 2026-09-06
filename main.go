@@ -64,14 +64,36 @@ func main() {
 
 	// pointerDemo()
 
-	// Accessing methods attached to struct
-	v := Vertex{3, -4}
-	fmt.Printf("v: %v\n", v)
-	// printing normal distance
-	fmt.Println(distance(v))
-	// taking only absolute values
-	fmt.Println(v.Abs())
-	// changing original values
-	v.Scale(10)
-	fmt.Printf("v: %v\n", v)
+	// Accessing methods attached to a struct
+	// v := Vertex{3, -4}
+	// fmt.Printf("v: %v\n", v)
+	// // printing normal distance
+	// fmt.Println(distance(v))
+	// // taking only absolute values
+	// fmt.Println(v.Abs())
+	// // changing original values
+	// v.Scale(10)
+	// fmt.Printf("v: %v\n", v)
+
+	// Implementing interface
+	r := Rect{3.5, 6.2}
+	c := Circle{3.44}
+	printArea(r)
+	printArea(c)
+
+	// Empty interfaces are used by code that handles values of unknown type.
+	// inplace of: interface{}, we can also use keyword: any
+	var i interface{}
+	describe(i)
+
+	i = 42
+	describe(i)
+
+	i = "Hello"
+	describe(i)
+}
+
+func describe(i interface{}) {
+	// %T in print statement prints out the variable's type
+	fmt.Printf("(%v, %T)\n", i, i)
 }
