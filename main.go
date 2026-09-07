@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"strings"
+	"os"
 )
 
 // if i am declaring a main function here, and then again in some other file (hello_world.go) then it will throw - duplicate function declared error.
@@ -110,9 +111,18 @@ func main() {
 	}
 
 	// Using io.Reader 
-	r := strings.NewReader("Hello, World!")
+	s := strings.NewReader("Hello, World!")
+
+	// Custom Reader
+	// r := &MyReader{"Hello, Worldz!", 0}
+
+	// Custom reader that modifies elements by 13
+	r := rot13Reader{s}
+	// io.Copy reads from r and streams directly to terminal stdout
+	io.Copy(os.Stdout, &r)
+
 	// making a byte array of length 8
-	b := make([]byte, 19)
+	b := make([]byte, 20)
 	for {
 		// populate the byte array with content being read
 		n, err := r.Read(b)
@@ -121,6 +131,52 @@ func main() {
 		}
 		fmt.Printf("n = %v, str = %q, b = %v\n", n, b[:n], b)
 	}
+}
+
+// Wrapping io.Reader inside another is known as the Decorator pattern
+type rot13Reader struct {
+	r io.Reader
+}
+
+func (rot *rot13Reader) Read(p []byte) (int, error) {
+	// the underlying reader will loop through the string 
+	n, err := rot.r.Read(p)
+	// modifying the bytes that were actually read
+	for i := 0; i < n; i++ {
+		b := p[i]
+		if 'A' <= b && b <= 'Z' {
+			p[i] = 'A' + (b - 'A' + 13) % 26
+		}
+		if 'a' <= b && b <= 'z' {
+			p[i] = 'a' + (b - 'a' + 13) % 26
+		}
+	}
+	return n, err
+}
+
+type MyReader struct {
+	s string
+	// pos will help us track the current index we are on in the string s
+	pos int
+}
+
+func (r *MyReader) Read(p []byte) (int, error) {
+	// making sure we are within bounds of the given string
+	if r.pos >= len(r.s) {
+		return 0, io.EOF
+	}
+	n := 0
+	for n < len(p) && r.pos < len(r.s) {
+		// replacing letters on even positions
+		if r.pos % 2 == 0 {
+			p[n] = 'A'
+		}else{
+			p[n] = r.s[r.pos]
+		}	
+		r.pos += 1
+		n += 1
+	}
+	return n, nil
 }
 
 func describe(i interface{}) {
