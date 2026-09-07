@@ -2,7 +2,11 @@
 // Command: go mod init folder_name
 package main
 // the library that allows us to print anything to stdout.
-import "fmt"
+import (
+	"fmt"
+	"io"
+	"strings"
+)
 
 // if i am declaring a main function here, and then again in some other file (hello_world.go) then it will throw - duplicate function declared error.
 // Now, to run this we will have to compile all the files in this folder, because we are using function from different files
@@ -76,21 +80,47 @@ func main() {
 	// fmt.Printf("v: %v\n", v)
 
 	// Implementing interface
-	r := Rect{3.5, 6.2}
-	c := Circle{3.44}
-	printArea(r)
-	printArea(c)
+	// r := Rect{3.5, 6.2}
+	// c := Circle{3.44}
+	// printArea(r)
+	// printArea(c)
 
 	// Empty interfaces are used by code that handles values of unknown type.
 	// inplace of: interface{}, we can also use keyword: any
-	var i interface{}
-	describe(i)
+	// var i interface{}
+	// describe(i)
 
-	i = 42
-	describe(i)
+	// i = 42
+	// describe(i)
 
-	i = "Hello"
-	describe(i)
+	// i = "Hello"
+	// describe(i)
+	// Type assertion provides access to an interface value's underlying concrete value
+	// i.(T); where T can be: string, float32, int 
+	// s, ok := i.(string)
+	// fmt.Println(s, ok)
+
+	// Custom Errors
+	fmt.Println(sqrt(2))
+	fmt.Println(sqrt(-2))
+
+	err := run()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// Using io.Reader 
+	r := strings.NewReader("Hello, World!")
+	// making a byte array of length 8
+	b := make([]byte, 19)
+	for {
+		// populate the byte array with content being read
+		n, err := r.Read(b)
+		if err == io.EOF {
+			break
+		}
+		fmt.Printf("n = %v, str = %q, b = %v\n", n, b[:n], b)
+	}
 }
 
 func describe(i interface{}) {
