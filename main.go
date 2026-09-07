@@ -102,13 +102,13 @@ func main() {
 	// fmt.Println(s, ok)
 
 	// Custom Errors
-	fmt.Println(sqrt(2))
-	fmt.Println(sqrt(-2))
+	// fmt.Println(sqrt(2))
+	// fmt.Println(sqrt(-2))
 
-	err := run()
-	if err != nil {
-		fmt.Println(err)
-	}
+	// err := run()
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
 
 	// Using io.Reader 
 	s := strings.NewReader("Hello, World!")
@@ -120,17 +120,41 @@ func main() {
 	r := rot13Reader{s}
 	// io.Copy reads from r and streams directly to terminal stdout
 	io.Copy(os.Stdout, &r)
+	fmt.Print("\n")
 
 	// making a byte array of length 8
-	b := make([]byte, 20)
-	for {
-		// populate the byte array with content being read
-		n, err := r.Read(b)
-		if err == io.EOF {
-			break
-		}
-		fmt.Printf("n = %v, str = %q, b = %v\n", n, b[:n], b)
+	// b := make([]byte, 20)
+	// for {
+	// 	// populate the byte array with content being read
+	// 	n, err := r.Read(b)
+	// 	if err == io.EOF {
+	// 		break
+	// 	}
+	// 	fmt.Printf("n = %v, str = %q, b = %v\n", n, b[:n], b)
+	// }
+
+	// Go functions can be written to work on multiple types using type parameters.
+	a1 := []int {10, 2, 3, 45, 98, 1}
+	target := 98
+	fmt.Printf("found value %v at index %v\n", target, where(a1, target))
+	a2 := []string {"five", "foo", "voo", "boo"}
+	str := "hello"
+	fmt.Printf("found value %v at index %v\n", str, where(a2, str))
+
+	// linked list
+	dummy := &LinkedList[int]{0, nil}
+	prev := dummy
+	for i := 1; i <= 5; i++ {
+		node := &LinkedList[int]{val:i, next:nil}
+		prev.next = node
+		prev = node
 	}
+	curr := dummy.next
+	for curr != nil {
+		fmt.Printf(" %v -> ", curr.val)
+		curr = curr.next
+	}
+	fmt.Print("nil")
 }
 
 // Wrapping io.Reader inside another is known as the Decorator pattern
