@@ -1,12 +1,15 @@
 // Go requires a go.mod file in your project directory to manage its module system
 // Command: go mod init folder_name
 package main
+
 // the library that allows us to print anything to stdout.
 import (
 	"fmt"
 	"io"
-	"strings"
 	"os"
+	"strings"
+	"sync"
+	// "time"
 )
 
 // if i am declaring a main function here, and then again in some other file (hello_world.go) then it will throw - duplicate function declared error.
@@ -134,28 +137,75 @@ func main() {
 	// }
 
 	// Go functions can be written to work on multiple types using type parameters.
-	a1 := []int {10, 2, 3, 45, 98, 1}
-	target := 98
-	fmt.Printf("found value %v at index %v\n", target, where(a1, target))
-	a2 := []string {"five", "foo", "voo", "boo"}
-	str := "hello"
-	fmt.Printf("found value %v at index %v\n", str, where(a2, str))
+	// a1 := []int {10, 2, 3, 45, 98, 1}
+	// target := 98
+	// fmt.Printf("found value %v at index %v\n", target, where(a1, target))
+	// a2 := []string {"five", "foo", "voo", "boo"}
+	// str := "hello"
+	// fmt.Printf("found value %v at index %v\n", str, where(a2, str))
 
 	// linked list
-	dummy := &LinkedList[int]{0, nil}
-	prev := dummy
-	for i := 1; i <= 5; i++ {
-		node := &LinkedList[int]{val:i, next:nil}
-		prev.next = node
-		prev = node
+	// dummy := &LinkedList[int]{0, nil}
+	// prev := dummy
+	// for i := 1; i <= 5; i++ {
+	// 	node := &LinkedList[int]{val:i, next:nil}
+	// 	prev.next = node
+	// 	prev = node
+	// }
+	// curr := dummy.next
+	// for curr != nil {
+	// 	fmt.Printf(" %v -> ", curr.val)
+	// 	curr = curr.next
+	// }
+	// fmt.Print("nil")
+
+	//  --------------------------------------------------------------------------------- 
+
+	// Goroutines
+	go say("hello")
+	say("world")
+	// If i make - say("world") also a goroutine, then nothing will be printed,
+	// because main() has no remaining work to do, so it terminates before either background goroutine wakes up from its first sleep.
+
+	// A more reliable way to synchronize goroutines is by using a WaitGroup. 
+	var wg sync.WaitGroup
+	// Adding new goroutines before they are called
+	wg.Add(2)
+
+	go ReliableSay("hello", &wg)
+	go ReliableSay("world", &wg)
+
+	// wg.Wait() blocks the main goroutine until the counter reaches 0, ensuring all goroutines have finished before main exits.
+	wg.Wait()
+	fmt.Println("All go routines completed.")
+
+	// Channels
+	// this is an unbuffered channel, meaning no specific length is defined
+	ch := make(chan int, 10)
+	a := []int {10, -3, 8, 90, 0, 4}
+	go sum(a[:len(a)/2], ch)
+	go sum(a[len(a)/2:], ch)
+	// variable <- channel, get value from the channel
+	x, y := <-ch, <-ch
+	fmt.Printf("x: %v, y: %v, x+y: %v\n", x, y, x + y)
+	// Now, channel 'ch' will be empty
+
+	// Buffered channel
+	c := make(chan int, 2)
+	c <- 100
+	c <- 34
+	// removing items from the buffer: '<- channel'
+	fmt.Println(<- c)
+	fmt.Println(<- c)
+
+	// Sending only required amount of data
+	// although channel is defined for a length of 10, i am producing only 5 items and reading just them
+	go produce(5, ch)
+	for val := range ch {
+		fmt.Println("recieved: ", val)
 	}
-	curr := dummy.next
-	for curr != nil {
-		fmt.Printf(" %v -> ", curr.val)
-		curr = curr.next
-	}
-	fmt.Print("nil")
 }
+
 
 // Wrapping io.Reader inside another is known as the Decorator pattern
 type rot13Reader struct {
