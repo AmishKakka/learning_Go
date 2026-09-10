@@ -38,7 +38,6 @@ go run .
 
 Because the examples share the `main` package, `go run .` is preferred over running only `main.go`. Running a single file can omit functions defined in the other files.
 
-
 ## File Guide
 
 | File | Topics and examples |
